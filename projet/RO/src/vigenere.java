@@ -91,7 +91,7 @@ public class vigenere {
 		FileWriter fw = new FileWriter(f);
 		fw.write(s_out);
 		fw.close();
-		System.out.println(s_out);
+		// System.out.println(s_out);
 	}
 
 }
