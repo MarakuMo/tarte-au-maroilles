@@ -16,9 +16,9 @@ public class vigenere {
 		boolean go = true;
 
 		vigenere v = new vigenere();
-		if (args[0].equals("c") && (args.length == 3)) {
+		if (args[0].equals("c") && (args.length == 4)) {
 			v.chiffrement = true;
-		} else if (args[0].equals("d") && (args.length == 3)) {
+		} else if (args[0].equals("d") && (args.length == 4)) {
 			v.chiffrement = false;
 		} else {
 			go = false;
@@ -61,10 +61,11 @@ public class vigenere {
 				indice_cle = (indice_cle + 1) % this.key.length();
 			}
 		}
+		File f = new File(this.file_out);
+		FileWriter fw = new FileWriter(f);
+		fw.write(s_out);
+		fw.close();
 		System.out.println(s_out);
-		File f_itf = new File("../");
-		FileWriter fw_itf = new FileWriter(f_itf);
-		fw_itf.write(s_out);
 	}
 
 	public void chiffrer() {
