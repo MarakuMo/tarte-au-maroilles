@@ -27,7 +27,11 @@ public class vigenere {
 				v.file_in = new Text(args[1]);
 				v.file_out = args[2];
 				v.key = args[3];
-				
+				if(v.chiffrement){
+					v.chiffrer();
+				}else{
+					v.dechiffrer();
+				}
 				
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -35,5 +39,17 @@ public class vigenere {
 		
 			
 	}
+
+	public void dechiffrer() {
+		
+		
+	}
+
+	public void chiffrer() {
+		
+		
+	}
+	
+	
 
 }
