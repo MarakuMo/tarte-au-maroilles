@@ -57,7 +57,7 @@ public class vigenere {
 				int n = ((Character) s.charAt(i)).hashCode() - 97;
 				int m = ((Character) this.key.charAt(indice_cle)).hashCode() - 97;
 				Character a = (char) ((n - m + 26) % 26 + 97);
-				s_out+=a;
+				s_out += a;
 				indice_cle = (indice_cle + 1) % this.key.length();
 			}
 		}
@@ -65,7 +65,7 @@ public class vigenere {
 		FileWriter fw = new FileWriter(f);
 		fw.write(s_out);
 		fw.close();
-		System.out.println(s_out);
+		// System.out.println(s_out);
 	}
 
 	public void chiffrer() throws IOException {
@@ -83,7 +83,7 @@ public class vigenere {
 				int n = ((Character) s.charAt(i)).hashCode() - 97;
 				int m = ((Character) this.key.charAt(indice_cle)).hashCode() - 97;
 				Character a = (char) ((n + m) % 26 + 97);
-				s_out+=a;
+				s_out += a;
 				indice_cle = (indice_cle + 1) % this.key.length();
 			}
 		}
