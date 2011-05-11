@@ -5,10 +5,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
 
 public class Histogramme {
 	public static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
 	public HashMap<Character,Integer> histogramme;
+	int maxint = 0;
+	char maxchar;
 	
 	public Histogramme(){
 		histogramme = new HashMap<Character,Integer>();
@@ -25,13 +29,15 @@ public class Histogramme {
 			BufferedReader br=new BufferedReader(ipsr);
 			String ligne;
 			while ((ligne=br.readLine())!=null){
-				System.out.println(ligne);
 				texte+=ligne+"\n";
 			}
 			br.close(); 
 			Histogramme h = new Histogramme();
 			
 			h.classer(texte);
+			h.impression();
+			h.max();
+			
 		}		
 		catch (Exception e){
 			System.out.println(e.toString());
@@ -40,27 +46,41 @@ public class Histogramme {
 	
 	public  void classer(String texte){
 		int l = texte.length();
-		char aux;
-		int occ;
+		Character aux;
+		Integer occ;
 		
 		for(int i=0;i<l;i++){
 			aux = texte.charAt(i);
 			occ = histogramme.remove(aux);
+			if(occ == null){
+				occ = 0;
+			}
 			occ ++;
+			if(occ > maxint){
+				maxint = occ;
+				maxchar = aux;
+			}
 			histogramme.put(aux,occ);
 		}
 		
 	}
 	public void impression(){
 		int l = alphabet.length();
-		char aux;
-		int val;
+		Character aux;
+		Integer val;
 		
 		for(int i=0;i<l;i++){
 			aux = alphabet.charAt(i);
 			val = histogramme.get(aux);
+			if(val == null){
+				val = 0;
+			}
 			System.out.println("Le caractère "+aux+" apparait "+val+ "fois.");
 		}
 	}
+	public void max(){
+		System.out.println("Le caractère qui apparait le plus est : " + maxchar+ " ("+maxint +" fois)");
+	}
+
 	
 }
