@@ -68,8 +68,30 @@ public class vigenere {
 		System.out.println(s_out);
 	}
 
-	public void chiffrer() {
-
+	public void chiffrer() throws IOException {
+		String s = this.file_in.getContenu();
+		String s_out = "";
+		int indice_cle = 0;
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) == ' ') {
+				s_out = s_out.concat(" ");
+			} else if (s.charAt(i) == '\n') {
+				s_out = s_out.concat("\n");
+			} else if (s.charAt(i) == '\t') {
+				s_out = s_out.concat("\t");
+			} else {
+				int n = ((Character) s.charAt(i)).hashCode() - 97;
+				int m = ((Character) this.key.charAt(indice_cle)).hashCode() - 97;
+				Character a = (char) ((n + m) % 26 + 97);
+				s_out+=a;
+				indice_cle = (indice_cle + 1) % this.key.length();
+			}
+		}
+		File f = new File(this.file_out);
+		FileWriter fw = new FileWriter(f);
+		fw.write(s_out);
+		fw.close();
+		System.out.println(s_out);
 	}
 
 }
