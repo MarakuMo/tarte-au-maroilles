@@ -1,8 +1,6 @@
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.CharBuffer;
-
 
 public class Text {
 
@@ -13,15 +11,15 @@ public class Text {
 		FileReader fr = new FileReader(f);
 		char[] cbuf = new char[10000];
 		fr.read(cbuf);
-		this.contenu = cbuf
-		System.out.println(u);
-		
-		
+		String s = "";
+		for (int i = 0; i < cbuf.length; i++) {
+			s = s.concat(Character.valueOf(cbuf[i]).toString());
+		}
+		this.contenu = s;
 	}
 
 	public String getContenu() {
 		return contenu;
 	}
-	
-	
+
 }
