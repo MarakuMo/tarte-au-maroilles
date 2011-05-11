@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class vigenere {
@@ -40,7 +42,7 @@ public class vigenere {
 
 	}
 
-	public void dechiffrer() {
+	public void dechiffrer() throws IOException {
 		String s = this.file_in.getContenu();
 		String s_out = "";
 		int indice_cle = 0;
@@ -60,6 +62,9 @@ public class vigenere {
 			}
 		}
 		System.out.println(s_out);
+		File f_itf = new File("../");
+		FileWriter fw_itf = new FileWriter(f_itf);
+		fw_itf.write(s_out);
 	}
 
 	public void chiffrer() {
