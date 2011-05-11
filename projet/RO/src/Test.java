@@ -9,10 +9,14 @@ public class Test {
 		Character deux = 'b';
 		Character zzz = 'z';
 		int a = un.hashCode()-97;
-		int b = deux.hashCode()-97;
+		int b = deux.hashCode();
 		int z = zzz.hashCode()-97;
-		System.out.println(a);
+	
+		Character aa = (char) ((a+26)%26+97);
+		String s = "e";
+		s+=aa;
+		System.out.println(aa);
 		System.out.println(b);
-		System.out.println(z);
+		System.out.println(s);
 	}
 }
