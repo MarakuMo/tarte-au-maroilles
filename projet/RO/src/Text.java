@@ -10,7 +10,6 @@ public class Text {
 	private String contenu;
 
 	public Text(String filepath) throws IOException {
-
 		String texte = "";
 		InputStream ips = new FileInputStream(filepath);
 		InputStreamReader ipsr = new InputStreamReader(ips);
@@ -23,22 +22,34 @@ public class Text {
 		contenu = texte;
 	}
 
+	public Text(String filepath, String text) throws IOException {
+		this(filepath);
+		this.contenu = text;
+	}
+
 	public String getContenu() {
 		return contenu;
 	}
 
-	public int indiceCoincidence() {
-		int l = this.contenu.length();
-		Histogramme h = new Histogramme(this);
-		HashMap<Character, Integer> hist = h.getHistogramme();	
+	public static float indiceCoincidence(String text) {
+		int l =text.length();
+		Histogramme h = new Histogramme(text);
+		HashMap<Character, Integer> hist = h.getHistogramme();
 		int somme = 0;
 		for (int i = 0; i < 25; i++) {
-			char c = (char) (97+i);
-			Integer a = hist.get(c);
-			somme += a*(a-1);
+			char c = (char) (97 + i);
+			Integer occ = hist.get(c);
+			somme += occ * (occ - 1);
 		}
-		somme = somme/l/(l-1);
-		return somme;
+		float somme1 = ((Integer) somme).floatValue();
+		int div = l * (l - 1);
+		float div1 = ((Integer) div).floatValue();
+		float ic = somme1 / div1;
+		return ic;
 	}
 
+	public String sousChaine(int longueur, int debut) {
+		String s = this.contenu;
+		return s.substring(debut, debut + longueur);
+	}
 }
