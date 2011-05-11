@@ -32,7 +32,7 @@ public class Text {
 	}
 
 	public static float indiceCoincidence(String text) {
-		int l =text.length();
+		int l = text.length();
 		Histogramme h = new Histogramme(text);
 		HashMap<Character, Integer> hist = h.getHistogramme();
 		int somme = 0;
@@ -48,8 +48,19 @@ public class Text {
 		return ic;
 	}
 
-	public String sousChaine(int longueur, int debut) {
+	public String sousChaine(int longueur) {
 		String s = this.contenu;
-		return s.substring(debut, debut + longueur);
+		String sprime = "";
+		int i = 0;
+		while (i < s.length()) {
+			char c = s.charAt(i);
+			if (c == ' ' || c == '\n' || c == '\t') {
+				i++;
+			} else {
+				sprime += c;
+				i = i + longueur;
+			}
+		}
+		return sprime;
 	}
 }
