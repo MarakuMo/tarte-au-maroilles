@@ -8,10 +8,10 @@ import java.util.HashMap;
 
 public class Histogramme {
 	public static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
-	public HashMap<String,Integer> histogramme;
+	public HashMap<Character,Integer> histogramme;
 	
 	public Histogramme(){
-		histogramme = new HashMap<String, Integer>();
+		histogramme = new HashMap<Character,Integer>();
 	}
 	
 	public static void main(String args[]){	
@@ -29,17 +29,38 @@ public class Histogramme {
 				texte+=ligne+"\n";
 			}
 			br.close(); 
+			Histogramme h = new Histogramme();
 			
-			classer(texte);
+			h.classer(texte);
 		}		
 		catch (Exception e){
 			System.out.println(e.toString());
 		}
 	}
 	
-	public void classer(String texte){
+	public  void classer(String texte){
+		int l = texte.length();
+		char aux;
+		int occ;
 		
+		for(int i=0;i<l;i++){
+			aux = texte.charAt(i);
+			occ = histogramme.remove(aux);
+			occ ++;
+			histogramme.put(aux,occ);
+		}
 		
+	}
+	public void impression(){
+		int l = alphabet.length();
+		char aux;
+		int val;
+		
+		for(int i=0;i<l;i++){
+			aux = alphabet.charAt(i);
+			val = histogramme.get(aux);
+			System.out.println("Le caractère "+aux+" apparait "+val+ "fois.");
+		}
 	}
 	
 }
