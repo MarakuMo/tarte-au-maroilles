@@ -51,14 +51,18 @@ public class Text {
 	public String sousChaine(int longueur) {
 		String s = this.contenu;
 		String sprime = "";
-		int i = 0;
-		while (i < s.length()) {
+		int j = 0;
+		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
-			if (c == ' ' || c == '\n' || c == '\t') {
-				i++;
+			if (c != ' ' && c != '\n' && c != '\t') {
+				if (i == j) {
+					// System.out.println(i);
+					sprime += c;
+					j += longueur;
+				}
 			} else {
-				sprime += c;
-				i = i + longueur;
+				// System.out.println("Espace en "+i);
+				j++;
 			}
 		}
 		return sprime;
