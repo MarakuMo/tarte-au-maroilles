@@ -32,7 +32,7 @@ public class Kasiski {
 			moy += hmIC.get(i);
 		}
 		moy /= hmIC.size();
-		float seuil = moy + moy * 25 / 100;
+		float seuil = moy + moy * 10 / 100;
 
 		// Calcul des pics
 		Integer[] vprime = new Integer[hmIC.size()];
