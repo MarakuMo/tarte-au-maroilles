@@ -6,7 +6,7 @@ public class Test {
 		String[] arg = new String[] {
 				"c",
 				"/home/auberi/Documents/Recherche_Operationnelle_projet/Ref0123",
-				"/home/auberi/Documents/Recherche_Operationnelle_projet/texte_chiffre2.txt",
+				"/home/auberi/Documents/Recherche_Operationnelle_projet/texte_chiffre.txt",
 				"bidule" };
 		vigenere.main(arg);
 		// String[] arg2 = new String[] {
@@ -34,7 +34,6 @@ public class Test {
 		System.out.println("max = " + max);
 		System.out.println("maxlsc = " + maxlsc);
 		// System.out.println(t.getContenu());
-
 		// vigenere v = new vigenere();
 
 	}
