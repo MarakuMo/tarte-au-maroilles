@@ -7,7 +7,7 @@ public class Test {
 				"c",
 				"/home/auberi/Documents/Recherche_Operationnelle_projet/Ref0123",
 				"/home/auberi/Documents/Recherche_Operationnelle_projet/texte_chiffre.txt",
-				"aplmkfes" };
+				"gfqgh" };
 		vigenere.main(arg);
 		// String[] arg2 = new String[] {
 		// "d",
@@ -20,6 +20,6 @@ public class Test {
 				"/home/auberi/Documents/Recherche_Operationnelle_projet/texte_chiffre.txt");
 		// System.out.println(t.getContenu());
 		// vigenere v = new vigenere();
-		Kasiski.longueurCle(t, 15);
+		Kasiski.longueurCle(t, 14);
 	}
 }
