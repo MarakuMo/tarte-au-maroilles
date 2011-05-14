@@ -7,7 +7,7 @@ public class Test {
 				"c",
 				"/home/auberi/Documents/Recherche_Operationnelle_projet/Ref0123",
 				"/home/auberi/Documents/Recherche_Operationnelle_projet/texte_chiffre.txt",
-				"amies" };
+				"aplmkfes" };
 		vigenere.main(arg);
 		// String[] arg2 = new String[] {
 		// "d",
