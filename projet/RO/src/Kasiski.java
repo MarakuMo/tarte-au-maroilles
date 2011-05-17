@@ -92,10 +92,16 @@ public class Kasiski {
 			// System.out.println("s" + i + " = " + si + "\n");
 			for (int j = 0; j < taille; j++) {
 				String sii = Text.texteDecale(si, j);
+				if (j==2 && i==1) {
+					System.out.println(si);
+					System.out.println(sii);	
+				}
+				
 				tableauICM[i - 1][j] = Text.indiceCoincidenceMutuelle(s0, sii);
-				// System.out.print(tableauICM[i - 1][j] + "\t");
+				String a = "" + (char) (97 + j);
+				//System.out.print(a +" : "+ tableauICM[i - 1][j] + "\t");
 			}
-			// System.out.println();
+			//System.out.println();
 		}
 		return tableauICM;
 	}
@@ -120,7 +126,17 @@ public class Kasiski {
 	}
 
 	// 3 : En déduire la bonne clé
-	
-	
-	
+
+	public static void deductionCle(Integer[] tableau) {
+		String s = "a";
+		for (int i = 0; i < tableau.length; i++) {
+			s += Histogramme.alphabet.charAt(tableau[i]);
+		}
+		for (int i = 0; i < Histogramme.alphabet.length(); i++) {
+			String s2 = "";
+			s2 += Text.texteDecale(s, i);
+			System.out.println(s2);
+		}
+	}
+
 }

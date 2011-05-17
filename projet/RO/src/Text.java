@@ -103,9 +103,10 @@ public class Text {
 	public static String texteDecale(String si, int j) {
 		String s = "";
 		for (int i = 0; i < si.length(); i++) {
-			s += Histogramme.alphabet.charAt((Histogramme.alphabet.indexOf(si
-					.charAt(i)) + j) % Histogramme.alphabet.length());
+			s += Histogramme.alphabet.charAt((si.charAt(i) + j - 97)
+					% Histogramme.alphabet.length());
 		}
 		return s;
 	}
+
 }
