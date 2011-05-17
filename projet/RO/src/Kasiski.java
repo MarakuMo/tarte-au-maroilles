@@ -78,5 +78,49 @@ public class Kasiski {
 
 	// 2 : Trouver une liste de clés possibles
 
+	/*
+	 * Calcul des Indices de Coïncidence Mutuelle pour les décalages du texte s.
+	 */
+	public static Float[][] calculDecalage(Text t, int longueurCle) {
+		Histogramme h = new Histogramme(t);
+		int taille = h.getHistogramme().size();
+		Float[][] tableauICM = new Float[longueurCle - 1][taille];
+		String s0 = t.sousChaine(longueurCle);
+		// System.out.println("s0 = " + s0 + "\n");
+		for (int i = 1; i < longueurCle; i++) {
+			String si = t.sousChaine(longueurCle, i);
+			// System.out.println("s" + i + " = " + si + "\n");
+			for (int j = 0; j < taille; j++) {
+				String sii = Text.texteDecale(si, j);
+				tableauICM[i - 1][j] = Text.indiceCoincidenceMutuelle(s0, sii);
+				// System.out.print(tableauICM[i - 1][j] + "\t");
+			}
+			// System.out.println();
+		}
+		return tableauICM;
+	}
+
+	public static Integer[] decalagesMaximaux(Float[][] tableauICM) {
+		int l = tableauICM.length;
+		int longalpha = Histogramme.alphabet.length();
+		Integer[] res = new Integer[l];
+		for (int i = 0; i < res.length; i++) {
+			Float ICMmax = (float) 0;
+			Integer indmax = -1;
+			for (int j = 0; j < longalpha; j++) {
+				if (tableauICM[i][j] > ICMmax) {
+					ICMmax = tableauICM[i][j];
+					indmax = j;
+				}
+			}
+			res[i] = indmax;
+			System.out.println(res[i]);
+		}
+		return res;
+	}
+
 	// 3 : En déduire la bonne clé
+	
+	
+	
 }

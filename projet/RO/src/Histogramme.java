@@ -1,19 +1,14 @@
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class Histogramme {
-	private static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
+	public static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
 	private HashMap<Character, Integer> histo;
 	private int maxint = 0;
 	private char maxchar;
-	private String text;
 
 	public Histogramme() {
 		histo = new HashMap<Character, Integer>();
-		for (int i = 0; i < 26; i++) {
+		for (int i = 0; i < alphabet.length(); i++) {
 			Character c = (char) (97 + i);
 			histo.put(c, 0);
 		}
@@ -21,23 +16,12 @@ public class Histogramme {
 
 	public Histogramme(Text args0) {
 		this();
-		/*
-		 * String fichier = args0; String texte = "";
-		 */
-
-		// lecture du fichier texte
-		/*
-		 * InputStream ips = new FileInputStream(fichier); InputStreamReader
-		 * ipsr = new InputStreamReader(ips); BufferedReader br = new
-		 * BufferedReader(ipsr); String ligne; while ((ligne = br.readLine()) !=
-		 * null) { texte += ligne + "\n"; } br.close();
-		 */
 		compterOcc(args0.getContenu());
 		// impression();
 		// afficherMax();
 	}
-	
-	public Histogramme(String text){
+
+	public Histogramme(String text) {
 		this();
 		compterOcc(text);
 	}
