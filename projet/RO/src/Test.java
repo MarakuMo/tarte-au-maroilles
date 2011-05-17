@@ -20,6 +20,8 @@ public class Test {
 				"/home/auberi/Documents/Recherche_Operationnelle_projet/texte_chiffre.txt");
 		// System.out.println(t.getContenu());
 		// vigenere v = new vigenere();
-		Kasiski.longueurCle(t, 14);
+		int n = Kasiski.longueurCle(t, 14);
+		Float[][] tableauICM = Kasiski.calculDecalage(t, n);
+		Kasiski.decalagesMaximaux(tableauICM);
 	}
 }

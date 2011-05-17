@@ -36,7 +36,8 @@ public class Text {
 		Histogramme h = new Histogramme(text);
 		HashMap<Character, Integer> hist = h.getHistogramme();
 		int somme = 0;
-		for (int i = 0; i < 25; i++) {
+		int size = hist.size();
+		for (int i = 0; i < size; i++) {
 			char c = (char) (97 + i);
 			Integer occ = hist.get(c);
 			somme += occ * (occ - 1);
@@ -48,15 +49,46 @@ public class Text {
 		return ic;
 	}
 
+	public static float indiceCoincidenceMutuelle(String s1, String s2) {
+		Histogramme h1 = new Histogramme(s1);
+		Histogramme h2 = new Histogramme(s2);
+		int l1 = s1.length();
+		int l2 = s2.length();
+		float div = l1 * l2;
+		float res = 0;
+		HashMap<Character, Integer> histo1 = h1.getHistogramme();
+		HashMap<Character, Integer> histo2 = h2.getHistogramme();
+		int size1 = histo1.size();
+		int size2 = histo2.size();
+		if (size1 == size2) {
+			for (int i = 0; i < size1; i++) {
+				char c = (char) (97 + i);
+				Integer occ1 = histo1.get(c);
+				Integer occ2 = histo2.get(c);
+				res += occ1 * occ2;
+			}
+			res /= div;
+		} else {
+			res = -1;
+			System.err
+					.println("Les alphabets des deux textes sont différents.");
+		}
+		return res;
+	}
+
 	public String sousChaine(int longueur) {
+		return sousChaine(longueur, 0);
+	}
+
+	public String sousChaine(int longueur, int decalage) {
 		String s = this.contenu;
 		String sprime = "";
-		int j = 0;
-		for (int i = 0; i < s.length(); i++) {
+		int j = decalage;
+		for (int i = decalage; i < s.length(); i++) {
 			char c = s.charAt(i);
 			if (c != ' ' && c != '\n' && c != '\t') {
 				if (i == j) {
-					// System.out.println(i);
+					// System.out.println("lettre en "+i);
 					sprime += c;
 					j += longueur;
 				}
@@ -66,5 +98,14 @@ public class Text {
 			}
 		}
 		return sprime;
+	}
+
+	public static String texteDecale(String si, int j) {
+		String s = "";
+		for (int i = 0; i < si.length(); i++) {
+			s += Histogramme.alphabet.charAt((Histogramme.alphabet.indexOf(si
+					.charAt(i)) + j) % Histogramme.alphabet.length());
+		}
+		return s;
 	}
 }
