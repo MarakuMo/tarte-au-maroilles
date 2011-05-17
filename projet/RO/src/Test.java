@@ -7,7 +7,7 @@ public class Test {
 				"c",
 				"/home/auberi/Documents/Recherche_Operationnelle_projet/Ref0123",
 				"/home/auberi/Documents/Recherche_Operationnelle_projet/texte_chiffre.txt",
-				"gfqgh" };
+				"amies" };
 		vigenere.main(arg);
 		// String[] arg2 = new String[] {
 		// "d",
@@ -22,6 +22,7 @@ public class Test {
 		// vigenere v = new vigenere();
 		int n = Kasiski.longueurCle(t, 14);
 		Float[][] tableauICM = Kasiski.calculDecalage(t, n);
-		Kasiski.decalagesMaximaux(tableauICM);
+		Integer[] a = Kasiski.decalagesMaximaux(tableauICM);
+		Kasiski.deductionCle(a);
 	}
 }
