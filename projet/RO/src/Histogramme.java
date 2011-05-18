@@ -1,10 +1,9 @@
 import java.util.HashMap;
-import java.awt.*; 
-import java.awt.event.*; 
-import javax.swing.*; 
-import org.jfree.chart.*; 
-import org.jfree.chart.plot.*; 
-import org.jfree.data.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import org.jfree.chart.*;
+import org.jfree.chart.plot.*;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class Histogramme {
@@ -51,9 +50,11 @@ public class Histogramme {
 
 	public void impression() {
 		int l = alphabet.length();
+		int somme = 0;
 		for (int i = 0; i < l; i++) {
 			Character aux = alphabet.charAt(i);
 			Integer val = histo.get(aux);
+			somme += val;
 			System.out.println("Le caractère " + aux + " apparaît " + val
 					+ " fois.");
 		}
@@ -67,60 +68,50 @@ public class Histogramme {
 	public HashMap<Character, Integer> getHistogramme() {
 		return histo;
 	}
-	
-	public void paint(){
-		DrawHisto d= new DrawHisto();
+
+	public void paint() {
+		DrawHisto d = new DrawHisto();
 		d.setVisible(true);
 	}
-	
-	
-	public class DrawHisto extends JFrame { 
+
+	public class DrawHisto extends JFrame {
 
 		private static final long serialVersionUID = 1L;
-		private JPanel pnl; 
+		private JPanel pnl;
 
-	  public DrawHisto() { 
-	    addWindowListener(new WindowAdapter() { 
-	      public void windowClosing(WindowEvent e) { 
-	        dispose(); 
-	        System.exit(0); 
-	      } 
-	    }); 
-	    pnl = new JPanel(new BorderLayout()); 
-	    setContentPane(pnl); 
-	    setSize(400, 250); 
+		public DrawHisto() {
+			addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					dispose();
+					System.exit(0);
+				}
+			});
+			pnl = new JPanel(new BorderLayout());
+			setContentPane(pnl);
+			setSize(400, 250);
 
-	    DefaultCategoryDataset dataset = new DefaultCategoryDataset(); 
-	    
-		Character c;
-		int cnum;
-		int val ;
-		for (int i= 0; i<alphabet.length();i++){
-			c = alphabet.charAt(i);
-			val = histo.get(c);
-			dataset.addValue(val, c ,"");
+			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+			Character c;
+			int val;
+			for (int i = 0; i < alphabet.length(); i++) {
+				c = alphabet.charAt(i);
+				val = histo.get(c);
+				dataset.addValue(val, c, "");
+			}
+
+			JFreeChart barChart = ChartFactory.createBarChart(
+					"Histogramme des Lettres", "Charact�res",
+					"nombre d'occurence", dataset, PlotOrientation.VERTICAL,
+					true, true, false);
+			ChartPanel cPanel = new ChartPanel(barChart);
+			pnl.add(cPanel);
 		}
-	    
-	   
-	    JFreeChart barChart = ChartFactory.createBarChart("Histogramme des Lettres", "Charact�res", 
-	      "nombre d'occurence", dataset, PlotOrientation.VERTICAL, true, true, false); 
-	    ChartPanel cPanel = new ChartPanel(barChart); 
-	    pnl.add(cPanel); 
-	  } 
 
-//	  public static void main(String[] args) { 
-//	    TestBarChart tbc = new TestBarChart(); 
-//	    tbc. 
-//	  } 
+		// public static void main(String[] args) {
+		// TestBarChart tbc = new TestBarChart();
+		// tbc.
+		// }
 	}
 
 }
-
- 
-
-
-
-
-
-
-
