@@ -1,7 +1,38 @@
+package rech;
+
 import java.io.IOException;
+import java.lang.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
+import rech.Histogramme.DrawHisto;
 
 public class Kasiski {
+
+
+	public static void main(String[] args) {
+
+		if (args.length != 3) {
+			System.out
+					.println(" Veuillez respecter le modèle : Kasiski <file-in> <file-ref> <key-size>");
+		} else {
+			try {
+				Text t = new Text(args[0]);
+				Integer n = Integer.parseInt(args[2]);
+				Float[][] tableauICM = Kasiski.calculDecalage(t, n);
+				Integer[] a = Kasiski.decalagesMaximaux(tableauICM);
+				String[] b = Kasiski.deductionCle(a);
+				String s = extractionCle(b, args[0], args[1],
+						"/home/med/NetBeansProjects/rech/src/rech/texte_decrypte.txt");
+				String[] arg2 = new String[] { "d", args[0],
+						"/home/med/NetBeansProjects/rech/src/rech/texte_decrypte.txt", s };
+				vigenere.main(arg2);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
 	// 1 : Trouver la longueur n de la clé
 	/*
@@ -12,67 +43,99 @@ public class Kasiski {
 		return epurer(estPic(hmIC));
 	}
 
+	public static int pgcd(int a, int b) { // début de pgcd ()
+
+		if (a < b) // on veut le premier argument plus grand
+
+			return (pgcd(b, a));
+		else if (b == 0) // condition d'arrêt
+			return (a);
+		else
+			// on poursuit l'algorithme d'Euclide
+
+			return (pgcd(b, a % b));
+
+	} // fin de pgcd ()
+
 	private static int epurer(Float[] v) {
 		// System.out.println("début épurer");
-		Float mem = (float) 0;
-		int indice = -1;
-		for (int i = 0; i < v.length; i++) {
-			if (v[i] - mem > 0.01) {
-				mem = v[i];
-				indice = i + 2;
-			} else {
-				v[i] = (float) 0;
-			}
-			// System.out.println(v[i]);
+	
+		//int indice = -1;
+		System.out.println("############" + v.length);
+		int i = 0;
+		while (i < v.length && (v[i] == 0)) {
+			System.out.println("##############" +v[i] );
+			i++;
 		}
 
-		System.out.println("La longueur de la clé est " + indice + ".");
-		return indice;
+		
+//		int res = indice;
+		// for(int k=0; k <inds.size();k++){
+		// res = pgcd(res,inds.get(k));
+		// }
+
+		System.out.println("La longueur de la clé est " + (i+2) + ".");
+		return i+2;
 	}
 
-	private static HashMap<Integer, Float> remplirIC(Text t, int m) {
+	public static HashMap<Integer, Float> remplirIC(Text t, int m) {
 		HashMap<Integer, Float> longueurs = new HashMap<Integer, Float>();
+		Float maxIC = (float) 0;
+		int indiceIC = -1;
 		for (int lsc = m; lsc > 1; lsc--) {
 			String s = t.sousChaine(lsc);
 			float k = Text.indiceCoincidence(s);
 			longueurs.put(lsc, k);
+			if (k > maxIC) {
+				maxIC = k;
+				indiceIC = lsc;
+			}
 		}
+		System.out.println(">>>>>>>>>>>> " + indiceIC);
 		return longueurs;
 	}
 
 	private static Float[] estPic(HashMap<Integer, Float> hmIC) {
 		// System.out.println("début estPic");
 		// Calcul du seuil
-		Float moy = (float) 0;
-		for (int i = 2; i < hmIC.size() + 2; i++) {
-			moy += hmIC.get(i);
-		}
-		moy /= hmIC.size();
-		float seuil = moy + moy * 10 / 100;
+		// Float moy = (float) 0;
+		// for (int i = 2; i < hmIC.size() + 2; i++) {
+		// moy += hmIC.get(i);
+		// }
+		// moy /= hmIC.size();
+		// float seuil = moy ;
 
 		// Calcul des pics
+		
+		HashMap<Float,Integer> ind = new HashMap<Float,Integer>();
 		Float[] vprime = new Float[hmIC.size()];
-		for (int i = 2; i < hmIC.size() + 2; i++) {
+		vprime[0]= (float) 0;
+		vprime[hmIC.size()-1]= (float) 0;
+		Float moy =(float) 0 ;
+		
+		
+
+		
+		
+		System.out.println("~~~~~~~~~"+ind.toString());
+		System.out.println("~~~~~~~~"+moy);
+		
+		for (int i = 3; i < hmIC.size() + 1; i++) {
 			Float pred;
 			Float succ;
 			Float nb = hmIC.get(i);
-			if (i != 2) {
-				pred = hmIC.get(i - 1);
-			} else {
-				pred = (float) 0;
-			}
-			if (i != hmIC.size() + 1) {
-				succ = hmIC.get(i + 1);
-			} else {
-				succ = (float) 0;
-			}
-			if (nb > seuil && nb > pred && nb > succ) {
+			pred = hmIC.get(i - 1);
+			succ = hmIC.get(i + 1);
+			
+
+			if ((nb - pred) > 0.02 && (nb - succ) >0.02) {
 				vprime[i - 2] = nb;
 			} else {
 				vprime[i - 2] = (float) 0;
 			}
 			// System.out.println(vprime[i - 2]);
 		}
+		
 
 		return vprime;
 	}

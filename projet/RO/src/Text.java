@@ -1,3 +1,5 @@
+package rech;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,6 +31,23 @@ public class Text {
 
 	public String getContenu() {
 		return contenu;
+	}
+
+	public String getContenuSansEspace() {
+		int i = 0;
+		String res = "";
+		Character c;
+
+		while (i < contenu.length()) {
+			c = contenu.charAt(i);
+
+			if (c != ' ' && c != '\n' && c != '\t') {
+				res += c;
+			}
+			i++;
+		}
+
+		return res;
 	}
 
 	public static float indiceCoincidence(String text) {
@@ -76,23 +95,6 @@ public class Text {
 		return res;
 	}
 
-	public String getContenuSansEspace() {
-		int i = 0;
-		String res = "";
-		Character c;
-
-		while (i < contenu.length()) {
-			c = contenu.charAt(i);
-
-			if (c != ' ' && c != '\n' && c != '\t') {
-				res += c;
-			}
-			i++;
-		}
-
-		return res;
-	}
-
 	public String sousChaine(int longueur) {
 		return sousChaine(longueur, 0);
 	}
@@ -103,30 +105,13 @@ public class Text {
 		int j = decalage;
 		for (int i = decalage; i < s.length(); i++) {
 			char c = s.charAt(i);
-			if (c != ' ' && c != '\n' && c != '\t') {
-				if (i == j) {
-					// System.out.println("lettre en "+i);
-					sprime += c;
-					int compteur = longueur;
-					int ajustement = 0;
-					while (compteur > 0
-							&& i + longueur - compteur + ajustement < s
-									.length()) {
-						char c1 = s
-								.charAt(i + longueur - compteur + ajustement);
 
-						if (c1 != ' ' && c1 != '\n' && c1 != '\t') {
-							j++;
-							compteur--;
-						} else {
-							ajustement++;
-						}
-					}
-				}
-			} else {
-				// System.out.println("Espace en "+i);
-				j++;
+			if (i == j) {
+				// System.out.println("lettre en "+i);
+				sprime += c;
+				j += longueur;
 			}
+
 		}
 		return sprime;
 	}
