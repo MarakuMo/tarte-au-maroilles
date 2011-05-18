@@ -1,112 +1,166 @@
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 
-public class Text {
+public class Kasiski {
 
-	private String contenu;
-
-	public Text(String filepath) throws IOException {
-		String texte = "";
-		InputStream ips = new FileInputStream(filepath);
-		InputStreamReader ipsr = new InputStreamReader(ips);
-		BufferedReader br = new BufferedReader(ipsr);
-		String ligne;
-		while ((ligne = br.readLine()) != null) {
-			texte += ligne + "\n";
-		}
-		br.close();
-		contenu = texte;
+	// 1 : Trouver la longueur n de la clé
+	/*
+	 * Ne pas dépasser des tests de clés de longueur 15. <=> 2 < m < 15
+	 */
+	public static int longueurCle(Text t, int m) {
+		HashMap<Integer, Float> hmIC = remplirIC(t, m);
+		return epurer(estPic(hmIC));
 	}
 
-	public Text(String filepath, String text) throws IOException {
-		this(filepath);
-		this.contenu = text;
-	}
-
-	public String getContenu() {
-		return contenu;
-	}
-
-	public static float indiceCoincidence(String text) {
-		int l = text.length();
-		Histogramme h = new Histogramme(text);
-		HashMap<Character, Integer> hist = h.getHistogramme();
-		int somme = 0;
-		int size = hist.size();
-		for (int i = 0; i < size; i++) {
-			char c = (char) (97 + i);
-			Integer occ = hist.get(c);
-			somme += occ * (occ - 1);
-		}
-		float somme1 = ((Integer) somme).floatValue();
-		int div = l * (l - 1);
-		float div1 = ((Integer) div).floatValue();
-		float ic = somme1 / div1;
-		return ic;
-	}
-
-	public static float indiceCoincidenceMutuelle(String s1, String s2) {
-		Histogramme h1 = new Histogramme(s1);
-		Histogramme h2 = new Histogramme(s2);
-		int l1 = s1.length();
-		int l2 = s2.length();
-		float div = l1 * l2;
-		float res = (float) 0;
-		HashMap<Character, Integer> histo1 = h1.getHistogramme();
-		HashMap<Character, Integer> histo2 = h2.getHistogramme();
-		int size1 = histo1.size();
-		int size2 = histo2.size();
-		if (size1 == size2) {
-			for (int i = 0; i < size1; i++) {
-				char c = (char) (97 + i);
-				Integer occ1 = histo1.get(c);
-				Integer occ2 = histo2.get(c);
-				res += occ1 * occ2;
+	private static int epurer(Float[] v) {
+		// System.out.println("début épurer");
+		Float mem = (float) 0;
+		int indice = -1;
+		for (int i = 0; i < v.length; i++) {
+			if (v[i] - mem > 0.01) {
+				mem = v[i];
+				indice = i + 2;
+			} else {
+				v[i] = (float) 0;
 			}
-			res /= div;
-		} else {
-			res = -1;
-			System.err
-					.println("Les alphabets des deux textes sont différents.");
+			// System.out.println(v[i]);
+		}
+
+		System.out.println("La longueur de la clé est " + indice + ".");
+		return indice;
+	}
+
+	private static HashMap<Integer, Float> remplirIC(Text t, int m) {
+		HashMap<Integer, Float> longueurs = new HashMap<Integer, Float>();
+		for (int lsc = m; lsc > 1; lsc--) {
+			String s = t.sousChaine(lsc);
+			float k = Text.indiceCoincidence(s);
+			longueurs.put(lsc, k);
+		}
+		return longueurs;
+	}
+
+	private static Float[] estPic(HashMap<Integer, Float> hmIC) {
+		// System.out.println("début estPic");
+		// Calcul du seuil
+		Float moy = (float) 0;
+		for (int i = 2; i < hmIC.size() + 2; i++) {
+			moy += hmIC.get(i);
+		}
+		moy /= hmIC.size();
+		float seuil = moy + moy * 10 / 100;
+
+		// Calcul des pics
+		Float[] vprime = new Float[hmIC.size()];
+		for (int i = 2; i < hmIC.size() + 2; i++) {
+			Float pred;
+			Float succ;
+			Float nb = hmIC.get(i);
+			if (i != 2) {
+				pred = hmIC.get(i - 1);
+			} else {
+				pred = (float) 0;
+			}
+			if (i != hmIC.size() + 1) {
+				succ = hmIC.get(i + 1);
+			} else {
+				succ = (float) 0;
+			}
+			if (nb > seuil && nb > pred && nb > succ) {
+				vprime[i - 2] = nb;
+			} else {
+				vprime[i - 2] = (float) 0;
+			}
+			// System.out.println(vprime[i - 2]);
+		}
+
+		return vprime;
+	}
+
+	// 2 : Trouver une liste de clés possibles
+
+	/*
+	 * Calcul des Indices de Coïncidence Mutuelle pour les décalages du texte s.
+	 */
+	public static Float[][] calculDecalage(Text t, int longueurCle) {
+		Histogramme h = new Histogramme(t);
+		int taille = h.getHistogramme().size();
+		Float[][] tableauICM = new Float[longueurCle - 1][taille];
+		String s0 = t.sousChaine(longueurCle);
+		// System.out.println("s0 = " + s0);
+		for (int i = 1; i < longueurCle; i++) {
+			String si = t.sousChaine(longueurCle, i);
+			// System.out.println("s" + i + " = " + si);
+			for (int j = 0; j < taille; j++) {
+				String sii = Text.texteDecale(si, j);
+				if (j == 2 && i == 1) {
+					// System.out.println(si);
+					// System.out.println(sii);
+				}
+				tableauICM[i - 1][j] = Text.indiceCoincidenceMutuelle(s0, sii);
+				// String a = "" + (char) (97 + j);
+				// System.out.print(a +" : "+ tableauICM[i - 1][j] + "\t");
+			}
+			// System.out.println();
+		}
+		return tableauICM;
+	}
+
+	public static Integer[] decalagesMaximaux(Float[][] tableauICM) {
+		int l = tableauICM.length;
+		int longalpha = Histogramme.alphabet.length();
+		Integer[] res = new Integer[l];
+		for (int i = 0; i < res.length; i++) {
+			Float ICMmax = (float) 0;
+			Integer indmax = -1;
+			for (int j = 0; j < longalpha; j++) {
+				if (tableauICM[i][j] > ICMmax) {
+					ICMmax = tableauICM[i][j];
+					indmax = j;
+				}
+			}
+			res[i] = longalpha - indmax;
+			// System.out.println(res[i]);
 		}
 		return res;
 	}
 
-	public String sousChaine(int longueur) {
-		return sousChaine(longueur, 0);
-	}
+	// 3 : En déduire la bonne clé
 
-	public String sousChaine(int longueur, int decalage) {
-		String s = this.contenu;
-		String sprime = "";
-		int j = decalage;
-		for (int i = decalage; i < s.length(); i++) {
-			char c = s.charAt(i);
-			if (c != ' ' && c != '\n' && c != '\t') {
-				if (i == j) {
-					// System.out.println("lettre en "+i);
-					sprime += c;
-					j += longueur;
-				}
-			} else {
-				// System.out.println("Espace en "+i);
-				j++;
+	public static String[] deductionCle(Integer[] tableau) {
+		String s = "a";
+		String[] res = new String[Histogramme.alphabet.length()];
+		
+		for (int i = 0; i < tableau.length; i++) {
+			s += Histogramme.alphabet.charAt(tableau[i]);
+		}
+		for (int i = 0; i < Histogramme.alphabet.length(); i++) {
+			String s2 = "";
+			s2 += Text.texteDecale(s, i);
+			System.out.println(s2);
+			res[i] = s2;
+		}
+		
+		return res;
+	}
+	
+	public static String extractionCle(String[] tab,String pathTexte, String pathRef,String pathSortie) throws IOException{
+		float max = 0;
+		int ind = -1;
+		
+		for (int i = 0; i < tab.length; i++) {
+			String[] args = {"d",pathTexte,pathSortie,tab[i]};
+			vigenere.main(args);
+			Text t1 = new Text(pathSortie);
+			Text t2 = new Text(pathRef);
+			float aux = Text.indiceCoincidenceMutuelle(t1.getContenu(),t2.getContenu());
+			if(aux > max){
+				ind = i;
+				max = aux;
 			}
 		}
-		return sprime;
-	}
-
-	public static String texteDecale(String si, int j) {
-		String s = "";
-		for (int i = 0; i < si.length(); i++) {
-			s += Histogramme.alphabet.charAt((si.charAt(i) + j - 97)
-					% Histogramme.alphabet.length());
-		}
-		return s;
+		
+		return tab[ind];
 	}
 
 }
