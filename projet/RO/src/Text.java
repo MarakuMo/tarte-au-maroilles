@@ -55,7 +55,7 @@ public class Text {
 		int l1 = s1.length();
 		int l2 = s2.length();
 		float div = l1 * l2;
-		float res = 0;
+		float res = (float) 0;
 		HashMap<Character, Integer> histo1 = h1.getHistogramme();
 		HashMap<Character, Integer> histo2 = h2.getHistogramme();
 		int size1 = histo1.size();
