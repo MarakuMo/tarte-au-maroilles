@@ -76,12 +76,29 @@ public class Text {
 		return res;
 	}
 
+	public String getContenuSansEspace() {
+		int i = 0;
+		String res = "";
+		Character c;
+
+		while (i < contenu.length()) {
+			c = contenu.charAt(i);
+
+			if (c != ' ' && c != '\n' && c != '\t') {
+				res += c;
+			}
+			i++;
+		}
+
+		return res;
+	}
+
 	public String sousChaine(int longueur) {
 		return sousChaine(longueur, 0);
 	}
 
 	public String sousChaine(int longueur, int decalage) {
-		String s = this.contenu;
+		String s = getContenuSansEspace();
 		String sprime = "";
 		int j = decalage;
 		for (int i = decalage; i < s.length(); i++) {
@@ -90,7 +107,21 @@ public class Text {
 				if (i == j) {
 					// System.out.println("lettre en "+i);
 					sprime += c;
-					j += longueur;
+					int compteur = longueur;
+					int ajustement = 0;
+					while (compteur > 0
+							&& i + longueur - compteur + ajustement < s
+									.length()) {
+						char c1 = s
+								.charAt(i + longueur - compteur + ajustement);
+
+						if (c1 != ' ' && c1 != '\n' && c1 != '\t') {
+							j++;
+							compteur--;
+						} else {
+							ajustement++;
+						}
+					}
 				}
 			} else {
 				// System.out.println("Espace en "+i);

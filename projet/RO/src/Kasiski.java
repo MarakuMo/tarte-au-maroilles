@@ -120,7 +120,7 @@ public class Kasiski {
 				}
 			}
 			res[i] = (longalpha - indmax) % longalpha;
-			System.out.println(res[i]);
+			// System.out.println(res[i]);
 		}
 		return res;
 	}
