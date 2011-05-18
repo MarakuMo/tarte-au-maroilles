@@ -119,8 +119,8 @@ public class Kasiski {
 					indmax = j;
 				}
 			}
-			res[i] = longalpha - indmax;
-			// System.out.println(res[i]);
+			res[i] = (longalpha - indmax) % longalpha;
+			System.out.println(res[i]);
 		}
 		return res;
 	}
@@ -130,7 +130,6 @@ public class Kasiski {
 	public static String[] deductionCle(Integer[] tableau) {
 		String s = "a";
 		String[] res = new String[Histogramme.alphabet.length()];
-		
 		for (int i = 0; i < tableau.length; i++) {
 			s += Histogramme.alphabet.charAt(tableau[i]);
 		}
@@ -140,28 +139,27 @@ public class Kasiski {
 			System.out.println(s2);
 			res[i] = s2;
 		}
-		
 		return res;
 	}
-	
-	public static String extractionCle(String[] tab,String pathTexte, String pathRef,String pathSortie) throws IOException{
+
+	public static String extractionCle(String[] tab, String pathTexte,
+			String pathRef, String pathSortie) throws IOException {
 		float max = 0;
 		int ind = -1;
-		
+
 		for (int i = 0; i < tab.length; i++) {
-			String[] args = {"d",pathTexte,pathSortie,tab[i]};
+			String[] args = { "d", pathTexte, pathSortie, tab[i] };
 			vigenere.main(args);
 			Text t1 = new Text(pathSortie);
 			Text t2 = new Text(pathRef);
-			float aux = Text.indiceCoincidenceMutuelle(t1.getContenu(),t2.getContenu());
-			if(aux > max){
+			float aux = Text.indiceCoincidenceMutuelle(t1.getContenu(),
+					t2.getContenu());
+			if (aux > max) {
 				ind = i;
 				max = aux;
 			}
 		}
-		
 		System.out.println("la bonne cle est : " + tab[ind]);
-		
 		return tab[ind];
 	}
 
