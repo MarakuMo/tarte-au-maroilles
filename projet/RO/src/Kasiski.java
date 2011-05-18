@@ -86,22 +86,21 @@ public class Kasiski {
 		int taille = h.getHistogramme().size();
 		Float[][] tableauICM = new Float[longueurCle - 1][taille];
 		String s0 = t.sousChaine(longueurCle);
-		// System.out.println("s0 = " + s0 + "\n");
+		// System.out.println("s0 = " + s0);
 		for (int i = 1; i < longueurCle; i++) {
 			String si = t.sousChaine(longueurCle, i);
-			// System.out.println("s" + i + " = " + si + "\n");
+			// System.out.println("s" + i + " = " + si);
 			for (int j = 0; j < taille; j++) {
 				String sii = Text.texteDecale(si, j);
-				if (j==2 && i==1) {
-					System.out.println(si);
-					System.out.println(sii);	
+				if (j == 2 && i == 1) {
+					// System.out.println(si);
+					// System.out.println(sii);
 				}
-				
 				tableauICM[i - 1][j] = Text.indiceCoincidenceMutuelle(s0, sii);
-				String a = "" + (char) (97 + j);
-				//System.out.print(a +" : "+ tableauICM[i - 1][j] + "\t");
+				// String a = "" + (char) (97 + j);
+				// System.out.print(a +" : "+ tableauICM[i - 1][j] + "\t");
 			}
-			//System.out.println();
+			// System.out.println();
 		}
 		return tableauICM;
 	}
@@ -119,8 +118,8 @@ public class Kasiski {
 					indmax = j;
 				}
 			}
-			res[i] = indmax;
-			System.out.println(res[i]);
+			res[i] = longalpha - indmax;
+			// System.out.println(res[i]);
 		}
 		return res;
 	}
