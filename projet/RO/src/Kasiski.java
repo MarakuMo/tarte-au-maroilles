@@ -1,31 +1,28 @@
-package rech;
-
 import java.io.IOException;
-import java.lang.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
-import rech.Histogramme.DrawHisto;
 
 public class Kasiski {
 
-
 	public static void main(String[] args) {
 
-		if (args.length != 3) {
+		if (args.length != 2) {
 			System.out
-					.println(" Veuillez respecter le modèle : Kasiski <file-in> <file-ref> <key-size>");
+					.println(" Veuillez respecter le modèle : Kasiski <file-in> <file-ref>");
 		} else {
 			try {
 				Text t = new Text(args[0]);
-				Integer n = Integer.parseInt(args[2]);
+				int n = Kasiski.longueurCle(t, 100);// t.getContenu().length() /
+													// 100);
 				Float[][] tableauICM = Kasiski.calculDecalage(t, n);
 				Integer[] a = Kasiski.decalagesMaximaux(tableauICM);
 				String[] b = Kasiski.deductionCle(a);
 				String s = extractionCle(b, args[0], args[1],
-						"/home/med/NetBeansProjects/rech/src/rech/texte_decrypte.txt");
-				String[] arg2 = new String[] { "d", args[0],
-						"/home/med/NetBeansProjects/rech/src/rech/texte_decrypte.txt", s };
+						"texte_decrypte.txt");
+				String[] arg2 = new String[] {
+						"d",
+						args[0],
+						"/home/auberi/Documents/Recherche_Operationnelle_projet/texte_decrypte.txt",
+						s };
 				vigenere.main(arg2);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -59,83 +56,53 @@ public class Kasiski {
 
 	private static int epurer(Float[] v) {
 		// System.out.println("début épurer");
-	
-		//int indice = -1;
-		System.out.println("############" + v.length);
-		int i = 0;
-		while (i < v.length && (v[i] == 0)) {
-			System.out.println("##############" +v[i] );
-			i++;
+		Float mem = (float) 0;
+		int indice = -1;
+		for (int i = 0; i < v.length; i++) {
+			if (v[i] - mem > 0.015) {
+				mem = v[i];
+				indice = i + 2;
+			} else {
+				v[i] = (float) 0;
+			}
+			// System.out.println(v[i]);
 		}
 
-		
-//		int res = indice;
-		// for(int k=0; k <inds.size();k++){
-		// res = pgcd(res,inds.get(k));
-		// }
-
-		System.out.println("La longueur de la clé est " + (i+2) + ".");
-		return i+2;
+		System.out.println("La longueur de la clé est " + indice + ".");
+		return indice;
 	}
 
 	public static HashMap<Integer, Float> remplirIC(Text t, int m) {
 		HashMap<Integer, Float> longueurs = new HashMap<Integer, Float>();
-		Float maxIC = (float) 0;
-		int indiceIC = -1;
 		for (int lsc = m; lsc > 1; lsc--) {
 			String s = t.sousChaine(lsc);
 			float k = Text.indiceCoincidence(s);
 			longueurs.put(lsc, k);
-			if (k > maxIC) {
-				maxIC = k;
-				indiceIC = lsc;
-			}
 		}
-		System.out.println(">>>>>>>>>>>> " + indiceIC);
 		return longueurs;
 	}
 
 	private static Float[] estPic(HashMap<Integer, Float> hmIC) {
 		// System.out.println("début estPic");
 		// Calcul du seuil
-		// Float moy = (float) 0;
-		// for (int i = 2; i < hmIC.size() + 2; i++) {
-		// moy += hmIC.get(i);
-		// }
-		// moy /= hmIC.size();
-		// float seuil = moy ;
+		Float moy = (float) 0;
+		for (int i = 2; i < hmIC.size() + 2; i++) {
+			moy += hmIC.get(i);
+		}
+		moy /= hmIC.size();
+		float seuil = moy;
 
 		// Calcul des pics
-		
-		HashMap<Float,Integer> ind = new HashMap<Float,Integer>();
 		Float[] vprime = new Float[hmIC.size()];
-		vprime[0]= (float) 0;
-		vprime[hmIC.size()-1]= (float) 0;
-		Float moy =(float) 0 ;
-		
-		
-
-		
-		
-		System.out.println("~~~~~~~~~"+ind.toString());
-		System.out.println("~~~~~~~~"+moy);
-		
-		for (int i = 3; i < hmIC.size() + 1; i++) {
-			Float pred;
-			Float succ;
+		for (int i = 2; i < hmIC.size() + 2; i++) {
 			Float nb = hmIC.get(i);
-			pred = hmIC.get(i - 1);
-			succ = hmIC.get(i + 1);
-			
-
-			if ((nb - pred) > 0.02 && (nb - succ) >0.02) {
+			if (nb > seuil) {
 				vprime[i - 2] = nb;
 			} else {
 				vprime[i - 2] = (float) 0;
 			}
 			// System.out.println(vprime[i - 2]);
 		}
-		
 
 		return vprime;
 	}
@@ -183,7 +150,7 @@ public class Kasiski {
 				}
 			}
 			res[i] = (longalpha - indmax) % longalpha;
-			// System.out.println(res[i]);
+			// System.out.println(res[i] + " => " + (char) (97 + res[i]));
 		}
 		return res;
 	}
@@ -199,7 +166,7 @@ public class Kasiski {
 		for (int i = 0; i < Histogramme.alphabet.length(); i++) {
 			String s2 = "";
 			s2 += Text.texteDecale(s, i);
-			System.out.println(s2);
+			// System.out.println(s2);
 			res[i] = s2;
 		}
 		return res;
@@ -222,7 +189,7 @@ public class Kasiski {
 				max = aux;
 			}
 		}
-		System.out.println("la bonne cle est : " + tab[ind]);
+		System.out.println("La bonne clé est : " + tab[ind]);
 		return tab[ind];
 	}
 
