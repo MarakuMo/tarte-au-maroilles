@@ -1,13 +1,9 @@
-package rech;
-
 import java.util.HashMap;
-import java.util.Iterator;
-import java.awt.*; 
-import java.awt.event.*; 
-import javax.swing.*; 
-import org.jfree.chart.*; 
-import org.jfree.chart.plot.*; 
-import org.jfree.data.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import org.jfree.chart.*;
+import org.jfree.chart.plot.*;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class Histogramme {
@@ -70,62 +66,53 @@ public class Histogramme {
 	public HashMap<Character, Integer> getHistogramme() {
 		return histo;
 	}
-	
-	public void paint(String titre){
-		DrawHisto d= new DrawHisto(titre);
+
+	public void paint(String titre) {
+		DrawHisto d = new DrawHisto(titre);
 		d.setVisible(true);
 	}
-	
-	
-	public class DrawHisto extends JFrame { 
+
+	public class DrawHisto extends JFrame {
 
 		private static final long serialVersionUID = 1L;
-		private JPanel pnl; 
+		private JPanel pnl;
 		private String titre;
 
-	  public DrawHisto(String title) { 
-	    addWindowListener(new WindowAdapter() { 
-	      public void windowClosing(WindowEvent e) { 
-	        dispose(); 
-	        System.exit(0); 
-	      } 
-	    }); 
-	    titre = title;
-	    pnl = new JPanel(new BorderLayout()); 
-	    setContentPane(pnl); 
-	    setSize(400, 250); 
+		public DrawHisto(String title) {
+			addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					dispose();
+					System.exit(0);
+				}
+			});
+			titre = title;
+			pnl = new JPanel(new BorderLayout());
+			setContentPane(pnl);
+			setSize(400, 250);
 
-	    DefaultCategoryDataset dataset = new DefaultCategoryDataset(); 
-	    
-		Character c;
-		int val ;
-		
-		for (int i= 0; i<alphabet.length();i++){
-			c = alphabet.charAt(i) ;
-			val = histo.get(c);
-			dataset.addValue(val, c ,"");
+			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+			Character c;
+			int val;
+
+			for (int i = 0; i < alphabet.length(); i++) {
+				c = alphabet.charAt(i);
+				val = histo.get(c);
+				dataset.addValue(val, c, "");
+			}
+
+			JFreeChart barChart = ChartFactory.createBarChart(
+					"Texte de référence " + titre, "Charactères",
+					"nombre d'occurence", dataset, PlotOrientation.VERTICAL,
+					true, true, false);
+			ChartPanel cPanel = new ChartPanel(barChart);
+			pnl.add(cPanel);
 		}
-	    
-	   
-	    JFreeChart barChart = ChartFactory.createBarChart("Texte de référence " + titre, "Charactères", 
-	      "nombre d'occurence", dataset, PlotOrientation.VERTICAL, true, true, false); 
-	    ChartPanel cPanel = new ChartPanel(barChart); 
-	    pnl.add(cPanel); 
-	  } 
 
-//	  public static void main(String[] args) { 
-//	    TestBarChart tbc = new TestBarChart(); 
-//	    tbc. 
-//	  } 
+		// public static void main(String[] args) {
+		// TestBarChart tbc = new TestBarChart();
+		// tbc.
+		// }
 	}
 
 }
-
- 
-
-
-
-
-
-
-
