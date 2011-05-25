@@ -8,17 +8,21 @@ public class Kasiski {
 
 		if (args.length != 2) {
 			System.out
-					.println(" Veuillez respecter le mod√®le : Kasiski <file-in> <file-ref>");
+					.println(" Veuillez respecter le modËle : Kasiski <file-in> <file-ref>");
 		} else {
 			try {
 				Text t = new Text(args[0]);
-				HashMap<Integer, Float> hmIC = Kasiski.remplirIC(t,100);
+				int tp = 100;
+				if(t.getContenu().length()/100 > 100){
+					tp= t.getContenuSansEspace().length()/100;
+				}
+				HashMap<Integer, Float> hmIC = Kasiski.remplirIC(t,tp);
 				DrawIC d = new DrawIC(hmIC);
 				d.setVisible(true);
 				Integer n = longueurCle(t, 100);
 				boolean ok = false;
 				while (!ok) {
-					System.out.println("Longueur de Cl√© propos√©e  :  " + n);
+					System.out.println("Longueur de ClÈ proposÈe  :  " + n);
 					System.out
 							.println("Appuyez sur <y> pour valider, sinon Entrez votre longueur");
 					boolean ok0 = false;
@@ -56,7 +60,7 @@ public class Kasiski {
 								"src/texte_decrypte.txt", s };
 						vigenere.main(arg2);
 						System.out
-								.println("Cette Cl√© vous convient-elle ? <y> / <n>");
+								.println("Cette ClÈ vous convient-elle ? <y> / <n>");
 						boolean ok2 = false;
 						while (!ok2) {
 							Scanner sc2 = new Scanner(System.in);
@@ -83,9 +87,9 @@ public class Kasiski {
 		}
 	}
 
-	// 1 : Trouver la longueur n de la cl√©
+	// 1 : Trouver la longueur n de la clÈ
 	/*
-	 * Ne pas d√©passer des tests de cl√©s de longueur 15. <=> 2 < m < 15
+	 * Ne pas dÈpasser des tests de clÈs de longueur 15. <=> 2 < m < 15
 	 */
 	public static int longueurCle(Text t, int m) {
 		HashMap<Integer, Float> hmIC = remplirIC(t, m);
@@ -146,7 +150,7 @@ public class Kasiski {
 			pred = hmIC.get(i - 1);
 			succ = hmIC.get(i + 1);
 
-			if ((nb - pred) > 0.02 && (nb - succ) > 0.02) {
+			if ((nb - pred) > 0.015 && (nb - succ) > 0.015) {
 				vprime[i - 2] = nb;
 			} else {
 				vprime[i - 2] = (float) 0;
