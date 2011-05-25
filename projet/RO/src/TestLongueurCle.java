@@ -4,7 +4,7 @@ import java.util.HashMap;
 public class TestLongueurCle {
 
 	public static void main(String[] args) throws IOException {
-		String pathTexte = "Chiffre4";
+		String pathTexte = "src/Chiffre0";
 
 		Text t = new Text(pathTexte);
 		// int n = Kasiski.longueurCle(t, 100);

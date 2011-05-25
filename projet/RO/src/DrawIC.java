@@ -11,7 +11,7 @@ public class DrawIC extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel pnl;
 	private String titre;
-	private HashMap<Integer, Float> hmIC;
+	private HashMap<Integer, Float> hmIC; 
 
 	public DrawIC(HashMap<Integer, Float> hmic) {
 		addWindowListener(new WindowAdapter() {
@@ -27,21 +27,20 @@ public class DrawIC extends JFrame {
 		setSize(400, 250);
 
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
 		int t = hmIC.values().size();
+
 		for (Integer i = 0; i < t; i++) {
 
 			dataset.addValue(hmIC.get(i), "", i.toString());
 		}
 
-		JFreeChart barChart = ChartFactory.createBarChart("Texte de rÃ©fÃ©rence "
-				+ titre, "longueur de clÃ©", "Indices de coinsidence IC",
-				dataset, PlotOrientation.VERTICAL, true, true, true);
+		JFreeChart barChart = ChartFactory.createBarChart(
+				"Texte de référence " + titre, "longueur de clef :",
+				"Indices de coinsidence IC", dataset, PlotOrientation.VERTICAL,
+				true, true, true);
 		ChartPanel cPanel = new ChartPanel(barChart);
 		pnl.add(cPanel);
 	}
 
-	// public static void main(String[] args) {
-	// TestBarChart tbc = new TestBarChart();
-	// tbc.
-	// }
 }
