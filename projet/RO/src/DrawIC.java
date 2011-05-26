@@ -6,12 +6,15 @@ import org.jfree.chart.*;
 import org.jfree.chart.plot.*;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+
+// Classe qui permet de tracer les indices de coincidences, donnant à l'utilisateur
+// une vision plus globale du problème.
 public class DrawIC extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel pnl;
 	private String titre;
-	private HashMap<Integer, Float> hmIC; 
+	private HashMap<Integer, Float> hmIC; // Tableau des couples longeur, IC(longueur) 
 
 	public DrawIC(HashMap<Integer, Float> hmic) {
 		addWindowListener(new WindowAdapter() {
@@ -24,14 +27,14 @@ public class DrawIC extends JFrame {
 		titre = "valeur de IC pour tous les Characters";
 		pnl = new JPanel(new BorderLayout());
 		setContentPane(pnl);
-		setSize(400, 250);
+		setSize(400, 250); // taille de la fenetre
 
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
 		int t = hmIC.values().size();
 
-		for (Integer i = 0; i < t; i++) {
-
+		for (Integer i = 0; i < t; i++) { // pour toutes les longueurs disponibles
+			// on associe à cette longueur son indice de coincidences (un baton de l'histogramme)
 			dataset.addValue(hmIC.get(i), "", i.toString());
 		}
 

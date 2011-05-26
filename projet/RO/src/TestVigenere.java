@@ -4,18 +4,16 @@ public class TestVigenere {
 
 	public static void main(String[] args) throws IOException {
 
-//		String[] arg = new String[] {
-//				"c",
-//				"src/Chiffre4",
-//				"src/texte_chiffre.txt",
-//				"mrtokuencxozdphilat" };
-//		vigenere.main(arg);
+		// déchiffrement de Chiffre 4 à partir de la clef donnée 
+		String mode = "d";
+		String source = "src/Chiffre4";
+		String clef = "mrtvfuencxozdphila";
 		String[] arg2 = new String[] {
-				"d",
-				"src/Chiffre4",
+				mode,
+				source,
 				"src/texte_dechiffre.txt",
-				"mrtvfuencxozdphila" };
+				clef };
 		vigenere.main(arg2);
-		System.out.println("Operation Réussie, Consulter les fichiers src/texte_dechiffre.txt et src/texte_chiffre.txt ");
+		System.out.println("Operation Réussie, Consulteé le fichier src/texte_dechiffre.txt ");
 	}
 }
